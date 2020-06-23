@@ -11,9 +11,10 @@ import android.widget.ImageView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText editText;
+    private EditText edtInputText;
     private ImageView imgQRcode;
     private Button btnQRcode;
 
@@ -22,18 +23,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        editText = findViewById(R.id.editText);
+        edtInputText = findViewById(R.id.edtInputText);
         imgQRcode = findViewById(R.id.imgQRcode);
         btnQRcode = findViewById(R.id.btnQRcode);
+
         btnQRcode.setOnClickListener(btn_qrcode);
     }
+    private Button.OnClickListener btn_qrcode = new Button.OnClickListener(){
+        @Override
+        public void onClick(View view){
+            getCode(view);
+        }
+    };
 
-    public void btnOK(View view) {
+    public void getCode(View view){
         BarcodeEncoder encoder = new BarcodeEncoder();
-        try{
-            Bitmap bit = encoder.encodeBitmap(editText.getText().toString(), BarcodeFormat.QR_CODE,250,250);
+        try {
+            Bitmap bit = encoder.encodeBitmap(edtInputText.getText().toString(),
+                    BarcodeFormat.QR_CODE,
+                    250, 250);
             imgQRcode.setImageBitmap(bit);
-        }catch (WriterException e){
+        } catch (WriterException e) {
             e.printStackTrace();
         }
     }
